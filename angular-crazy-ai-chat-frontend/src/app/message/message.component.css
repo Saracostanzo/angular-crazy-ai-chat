@@ -1,23 +1,8 @@
-.user-msg {
+.user {
   text-align: right;
-  background-color: #c8f0c8; /* verde chiaro */
-  margin: 0.3rem 0;
-  padding: 0.5rem 1rem;
-  border-radius: 15px 15px 0 15px;
-  max-width: 70%;
-  align-self: flex-end;
+  color: blue;
 }
-
-.ai-msg {
+.ai {
   text-align: left;
-  background-color: #f9d6d5; /* rosa chiaro */
-  margin: 0.3rem 0;
-  padding: 0.5rem 1rem;
-  border-radius: 15px 15px 15px 0;
-  max-width: 70%;
-  align-self: flex-start;
-}
-
-div {
-  display: inline-block;
+  color: green;
 }

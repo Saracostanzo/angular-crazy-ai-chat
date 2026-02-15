@@ -1,3 +1,3 @@
-<div [ngClass]="{'user-msg': sender==='user', 'ai-msg': sender==='ai'}">
+<div [ngClass]="sender" class="message">
   {{ text }}
 </div>

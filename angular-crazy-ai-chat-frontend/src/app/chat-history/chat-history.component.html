@@ -1,8 +1,7 @@
 <div class="chat-history">
-  <!-- Itera tutti i messaggi e usa MessageComponent -->
-  <app-message 
-    *ngFor="let msg of messages" 
-    [text]="msg.text" 
+  <app-message
+    *ngFor="let msg of messages"
+    [text]="msg.text"
     [sender]="msg.sender">
   </app-message>
 </div>

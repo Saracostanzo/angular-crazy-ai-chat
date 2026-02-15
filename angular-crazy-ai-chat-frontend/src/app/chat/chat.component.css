@@ -1,0 +1,140 @@
+/* Container pazzo */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  max-width: 600px;
+  margin: 20px auto;
+  border: 5px dashed #ff00ff;
+  border-radius: 30px;
+  overflow: hidden;
+  font-family: 'Comic Sans MS', sans-serif;
+  background: repeating-linear-gradient(
+    45deg,
+    #ff0,#ff0 10px,
+    #0ff 10px,
+    #0ff 20px
+  );
+  animation: bg-shift 5s linear infinite;
+  box-shadow: 0 0 50px #ff0, 0 0 80px #0ff;
+}
+
+/* Messaggi */
+.messages {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  backdrop-filter: blur(6px);
+}
+
+/* Emoji pazzi */
+.emoji {
+  margin-right: 8px;
+  animation: shake 0.8s infinite alternate;
+}
+
+/* Messaggi utente pazzi */
+.user-msg {
+  align-self: flex-end;
+  background: linear-gradient(90deg, #ff00ff, #ffff00, #00ffff);
+  padding: 14px 20px;
+  border-radius: 25px 0 25px 25px;
+  max-width: 70%;
+  word-wrap: break-word;
+  animation: popin 0.3s ease-out, wiggle 2s infinite;
+  color: black;
+  font-weight: bold;
+}
+
+/* Messaggi bot pazzi */
+.bot-msg {
+  align-self: flex-start;
+  background: linear-gradient(90deg, #00ff00, #ff0000, #0000ff);
+  padding: 14px 20px;
+  border-radius: 0 25px 25px 25px;
+  max-width: 70%;
+  word-wrap: break-word;
+  animation: popin 0.3s ease-out, wiggle 2.5s infinite;
+  color: white;
+  font-weight: bold;
+}
+
+.bot-msg.loading {
+  opacity: 0.6;
+  font-style: italic;
+  animation: pulse 1s infinite alternate;
+}
+
+/* Input pazzo */
+.input-area {
+  display: flex;
+  padding: 12px;
+  background: black;
+  border-top: 5px dashed #ff00ff;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border: 3px solid #ff0;
+  border-radius: 25px;
+  background-color: black;
+  color: #0ff;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+  animation: neonGlow 1.5s infinite alternate;
+}
+
+button {
+  margin-left: 10px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(45deg, #ff00ff, #0ff, #ff0);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  animation: neonGlow 1.5s infinite alternate;
+  transition: transform 0.3s;
+}
+
+button:hover {
+  transform: rotate(-5deg) scale(1.1);
+}
+
+/* Animazioni */
+@keyframes popin {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+  100% { transform: rotate(-2deg); }
+}
+
+@keyframes shake {
+  0% { transform: rotate(-15deg); }
+  100% { transform: rotate(15deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes neonGlow {
+  0% { box-shadow: 0 0 5px #0ff, 0 0 10px #ff0; }
+  100% { box-shadow: 0 0 15px #ff0, 0 0 30px #0ff; }
+}
+
+@keyframes bg-shift {
+  0% { background-position: 0 0; }
+  100% { background-position: 200% 200%; }
+}

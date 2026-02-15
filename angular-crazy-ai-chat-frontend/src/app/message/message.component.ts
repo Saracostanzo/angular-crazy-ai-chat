@@ -1,11 +1,14 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-message',
-  templateUrl: './message.component.html',
+  standalone: true,
+  imports: [CommonModule],
+  template: `<div [ngClass]="sender">{{ text }}</div>`,
   styleUrls: ['./message.component.css']
 })
 export class MessageComponent {
-  @Input() text: string = '';              // testo del messaggio
-  @Input() sender: 'user' | 'ai' = 'user'; // chi ha inviato il messaggio
+  @Input() text: string = '';
+  @Input() sender: 'user' | 'ai' = 'user';
 }

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { ChatComponent } from './chat/chat.component'; // ./chat/ perché chat è dentro app
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [CommonModule, ChatComponent],
+  template: `<div class="app-container">
+               <app-chat></app-chat>
+             </div>`,
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'angular-crazy-ai-chat-frontend';
-}
+export class AppComponent {}
