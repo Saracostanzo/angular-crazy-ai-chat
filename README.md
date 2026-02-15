@@ -66,6 +66,7 @@ LLM API
 
 
 ▶️ **Setup Locale**
+
 1️⃣ Backend
 
 cd angular-crazy-ai-chat-backend
