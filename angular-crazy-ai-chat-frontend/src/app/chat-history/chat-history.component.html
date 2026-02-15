@@ -1,19 +1,8 @@
-<div class="chat-container">
-  <h2>Crazy AI Chat</h2>
-
-  <!-- Lista messaggi -->
-  <app-chat-history [messages]="messages"></app-chat-history>
-
-  <!-- Input e invio messaggi -->
-  <form (submit)="sendMessage()">
-    <input 
-      type="text" 
-      placeholder="Scrivi un messaggio..." 
-      [(ngModel)]="newMessage"
-      name="messageInput"
-      required
-    />
-    <button type="submit">Invia</button>
-  </form>
+<div class="chat-history">
+  <!-- Itera tutti i messaggi e usa MessageComponent -->
+  <app-message 
+    *ngFor="let msg of messages" 
+    [text]="msg.text" 
+    [sender]="msg.sender">
+  </app-message>
 </div>
-

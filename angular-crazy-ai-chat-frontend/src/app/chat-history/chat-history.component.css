@@ -1,0 +1,9 @@
+.chat-history {
+  max-height: 300px;       /* Altezza massima della lista */
+  overflow-y: auto;        /* Scroll verticale se troppi messaggi */
+  margin-bottom: 1rem;     
+  border: 1px solid #eee;  
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+}

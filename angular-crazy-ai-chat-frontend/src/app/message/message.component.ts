@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-message',
-  standalone: true,
-  imports: [],
   templateUrl: './message.component.html',
-  styleUrl: './message.component.css'
+  styleUrls: ['./message.component.css']
 })
 export class MessageComponent {
-
+  @Input() text: string = '';              // testo del messaggio
+  @Input() sender: 'user' | 'ai' = 'user'; // chi ha inviato il messaggio
 }

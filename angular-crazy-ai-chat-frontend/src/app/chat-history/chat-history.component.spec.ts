@@ -1,23 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input } from '@angular/core';
 
-import { ChatHistoryComponent } from './chat-history.component';
-
-describe('ChatHistoryComponent', () => {
-  let component: ChatHistoryComponent;
-  let fixture: ComponentFixture<ChatHistoryComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ChatHistoryComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(ChatHistoryComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+@Component({
+  selector: 'app-chat-history',
+  templateUrl: './chat-history.component.html',
+  styleUrls: ['./chat-history.component.css']
+})
+export class ChatHistoryComponent {
+  @Input() messages: any[] = []; // riceve i messaggi dal ChatComponent
+}
