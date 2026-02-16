@@ -12,96 +12,42 @@ app.use(cors());
 app.use(express.json());
 
 const HF_API_TOKEN = process.env.HF_API_TOKEN;
-if (!HF_API_TOKEN) {
-  console.error("❌ HF_API_TOKEN mancante nel file .env");
-}
 
 // HF Router chat endpoint
 const ROUTER_URL = "https://router.huggingface.co/v1/chat/completions";
 
-// Modello base
-const BASE_MODEL = "deepseek-ai/DeepSeek-V3-0324";
 
-// Fallback provider (se uno è down / 500 / non abilitato)
-const PROVIDERS = ["fireworks-ai", "novita", "together", "sambanova"];
-
-// Prompt di sistema per rendere la chat “crazy” e in italiano
-const SYSTEM_PROMPT = `
-Sei "CRAZY AI" 😈, un assistente ironico e creativo.
-Regole:
-- Rispondi SEMPRE in italiano.
-- Risposte brevi (2-4 frasi), massimo 1 emoji.
-- Se la domanda è ambigua o contiene acronimi (es. GH), chiedi chiarimento.
-- Niente elenchi lunghi a meno che l’utente li chieda.
-`;
-
-// Health check
-app.get("/health", (req, res) => res.json({ ok: true }));
-
-// pulisce eventuali blocchi <think>...</think>
-function stripThink(text = "") {
-  return text.replace(/<think>[\s\S]*?<\/think>\s*/g, "").trim();
-}
-
-async function callHF(model, userMessage) {
-  return axios.post(
-    ROUTER_URL,
-    {
-      model,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT.trim() },
-        { role: "user", content: userMessage }
-      ],
-      max_tokens: 220,
-      temperature: 0.7,
-      stream: false
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${HF_API_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      timeout: 60000
-    }
-  );
-}
+const MODEL = "deepseek-ai/DeepSeek-V3-0324";
 
 app.post("/api/chat", async (req, res) => {
-  const { message } = req.body;
+  try {
+    const { message } = req.body;
 
-  if (!message || typeof message !== "string") {
-    return res.status(400).json({ reply: "Messaggio non valido." });
+    const response = await axios.post(
+      ROUTER_URL,
+      {
+        model: MODEL,
+        messages: [{ role: "user", content: message }],
+        max_tokens: 150,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${HF_API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        timeout: 30000,
+      },
+    );
+
+    const reply =
+      response.data.choices?.[0]?.message?.content || "🤖 Nessuna risposta";
+    res.json({ reply });
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(500).json({
+      reply: "Oops, errore con Hugging Face 😅",
+    });
   }
-
-  // Candidati: prima routing auto, poi provider suffix
-  const candidates = [
-    BASE_MODEL,
-    ...PROVIDERS.map((p) => `${BASE_MODEL}:${p}`)
-  ];
-
-  for (const model of candidates) {
-    try {
-      const response = await callHF(model, message);
-
-      const raw = response.data?.choices?.[0]?.message?.content ?? "";
-      const reply = stripThink(raw) || "🤖 Nessuna risposta";
-
-      return res.json({ reply, modelUsed: model });
-    } catch (err) {
-      const status = err?.response?.status;
-      const data = err?.response?.data;
-
-      console.error(`❌ HF fallito model=${model} status=${status}`);
-      if (data) console.error(data);
-
-      // Prova il prossimo provider
-      continue;
-    }
-  }
-
-  return res.status(502).json({
-    reply: "Tutti i provider hanno fallito. Riprova tra poco 🙃"
-  });
 });
 
 app.listen(PORT, () => {
