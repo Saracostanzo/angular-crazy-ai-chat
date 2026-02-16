@@ -51,6 +51,5 @@ app.post("/api/chat", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Server attivo su http://localhost:${PORT}`);
-  console.log(`✅ Health: http://localhost:${PORT}/health`);
+  console.log(`Server attivo su http://localhost:${PORT}`);
 });
