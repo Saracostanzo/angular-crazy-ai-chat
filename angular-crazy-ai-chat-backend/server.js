@@ -11,8 +11,6 @@ const PORT = process.env.PORT || 3000;
 const HF_API_TOKEN = process.env.HF_API_TOKEN;
 if (!HF_API_TOKEN) {
   console.error("❌ HF_API_TOKEN mancante nel file .env");
-  // Se preferisci bloccare l'avvio:
-  // process.exit(1);
 }
 
 app.use(
@@ -49,7 +47,7 @@ const http = axios.create({
     Authorization: `Bearer ${HF_API_TOKEN}`,
     "Content-Type": "application/json",
   },
-  validateStatus: () => true, // gestiamo noi gli status
+  validateStatus: () => true,
 });
 
 function isRetryableStatus(status) {
@@ -72,18 +70,15 @@ async function callHF(model, userMessage) {
     stream: false,
   };
 
-  // 1 retry leggero su status retryable
   for (let attempt = 0; attempt < 2; attempt++) {
     const resp = await http.post("", payload);
 
     if (resp.status >= 200 && resp.status < 300) return resp;
 
-    // Se auth/permessi: inutile tentare ancora (e spesso anche altri provider)
     if (isFatalAuthStatus(resp.status)) return resp;
 
     if (!isRetryableStatus(resp.status) || attempt === 1) return resp;
 
-    // backoff semplice
     await new Promise((r) => setTimeout(r, 400));
   }
 }
@@ -118,7 +113,6 @@ app.post("/api/chat", async (req, res) => {
     console.error(`❌ HF fallito model=${model} status=${response.status}`);
     if (response.data) console.error(response.data);
 
-    // Se 401/403: smetti subito (token/modello non ok)
     if (isFatalAuthStatus(response.status)) {
       return res.status(502).json({
         reply:
@@ -127,7 +121,6 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    // Altrimenti prova il prossimo provider
     continue;
   }
 
